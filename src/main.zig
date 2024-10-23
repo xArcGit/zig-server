@@ -5,11 +5,10 @@ fn on_request(r: zap.Request) void {
     if (r.path) |the_path| {
         std.debug.print("PATH: {s}\n", .{the_path});
     }
-
     if (r.query) |the_query| {
         std.debug.print("QUERY: {s}\n", .{the_query});
     }
-    r.sendJson("{ name: \"zap\"}") catch return;
+    r.sendJson("{ \"name\": \"GET\", \"message\": \"Request received successfully\" }") catch return;
 }
 
 pub fn main() !void {
