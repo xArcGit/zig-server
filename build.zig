@@ -33,6 +33,16 @@ pub fn build(b: *std.Build) void {
 
     exe.root_module.addImport("zap", zap.module("zap"));
 
+    const sqlite = b.dependency("sqlite", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    exe.root_module.addImport("sqlite", sqlite.module("sqlite"));
+
+    // links the bundled sqlite3, so leave this out if you link the system one
+    exe.linkLibrary(sqlite.artifact("sqlite"));
+
     // This *creates* a Run step in the build graph, to be executed when another
     // step is evaluated that depends on it. The next line below will establish
     // such a dependency.

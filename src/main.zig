@@ -9,10 +9,30 @@ fn on_request(r: zap.Request) void {
     if (r.query) |the_query| {
         std.debug.print("QUERY: {s}\n", .{the_query});
     }
-    r.sendBody("<html><body><h1>Hello from ZAP!!!</h1></body></html>") catch return;
+    r.sendJson("{ name: \"zap\"}") catch return;
 }
 
 pub fn main() !void {
+    // TODO: Implement the following functions
+    // var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    // defer if (gpa.deinit() == .leak) {
+    //     std.debug.panic("leaks detected", .{});
+    // };
+
+    // var allocator = gpa.allocator();
+
+    // var db = try sqlite.Db.init(.{
+    //     .mode = sqlite.Db.Mode{ .File = "/home/vincent/mydata.db" },
+    //     .open_flags = .{
+    //         .write = true,
+    //         .create = true,
+    //     },
+    //     .threading_mode = .MultiThread,
+    // });
+    // defer db.deinit();
+
+    // try db.exec("CREATE TABLE nofity(id integer primary key, title text, description text, date date, tag text, url text, icon text)", .{}, .{});
+
     var listener = zap.HttpListener.init(.{
         .port = 3000,
         .on_request = on_request,
@@ -22,7 +42,6 @@ pub fn main() !void {
 
     std.debug.print("Listening on 0.0.0.0:3000\n", .{});
 
-    // start worker threads
     zap.start(.{
         .threads = 2,
         .workers = 2,
